@@ -1,0 +1,44 @@
+
+apply, vapply
+
+```{r}
+# apply, das die erste nicht 0 in einer Matrix such und deren Spalte zurückgibt 
+# 1 zeilenweiße 2 spaltenweiße C(1,2) beides
+# wich kann als Vektor gesehen werden und [[]] greift auf das erste Element zu
+
+apply(matrix, c(1,2), function(x) which(x != 0)[[1]])
+
+# vapply muss immer den Rückgabetype bestimmt werden
+# normal steht in er Matrix noch die anzahl, z.b character(1) "Ein Character"
+
+vapply(matrix, sum, matrix())
+
+```
+
+Funktionen
+
+```{r}
+# mit ... können beliebig viele Argumente übergeben werden um die abzugreifen muss man sie erst als List oder DF bezeichnen (habs mir DFs noch nicht ausprobiert)
+
+beispielfunction <- function(...){
+  args <- list(...)
+}
+```
+
+```{r}
+  assertFunction(fun)
+  assertNumeric(lower, len = 1)
+  assertNumeric(upper, len = 1)
+  x <- (upper + lower) / 2
+  while (fun(x) > 0.001 && fun(x) < -0.001) {
+    x <- (upper + lower) / 2
+    print(x)
+    if(fun(x) < 0){
+      lower <- x
+    }else{
+      upper <- x
+    }
+  }
+  x
+```
+
