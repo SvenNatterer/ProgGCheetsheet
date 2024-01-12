@@ -26,19 +26,23 @@ beispielfunction <- function(...){
 ```
 
 ```{r}
-  assertFunction(fun)
-  assertNumeric(lower, len = 1)
-  assertNumeric(upper, len = 1)
-  x <- (upper + lower) / 2
-  while (fun(x) > 0.001 && fun(x) < -0.001) {
-    x <- (upper + lower) / 2
-    print(x)
-    if(fun(x) < 0){
-      lower <- x
-    }else{
-      upper <- x
-    }
-  }
-  x
+# Beispiel Liste von Vektoren
+vectors <- list(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
+
+# Schwellenwert
+threshold <- 5
+
+# Anwenden der Funktion
+result <- vapply(vectors, function(x) x > threshold, logical(length(vectors[[1]])))
+
+print(result)
+
+```
+
+
+
+```{r}
+gsub("[^a-zA-Z]", "", input) #Alle Zeichen bis auf Buchstaben ersetzen 
+  cleanInput == paste(rev(strsplit(cleanInput, "")[[1]]), collapse = "")# nochmal anschauen
 ```
 
