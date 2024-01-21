@@ -1,6 +1,6 @@
 Cheetsheet für R
 
-PS02
+PS02 Struktur und Funktionen
 ```{r}
 #Funktionen kennenlernen
   all() # alle Werte sind TRUE
@@ -8,7 +8,7 @@ PS02
   ifelse() # if else in einer Funktion
 ```
 
-PS03
+PS03 Applys
 ```{r}
 # apply, das die erste nicht 0 in einer Matrix such und deren Spalte zurückgibt 
 # 1 zeilenweiße 2 spaltenweiße C(1,2) beides
@@ -35,7 +35,7 @@ lapply # gibt eine Liste zurück
 
 ```
 
-PS04
+PS04 Debugging
 ```{r}
 cleanInput == paste(rev(strsplit(cleanInput, "")[[1]]), collapse = "") #paste sehr mächtig um Strings zu formatieren
 supressWarnings() # unterdrückt Warnungen
@@ -47,46 +47,42 @@ beispielfunction <- function(...){
 }
 ```
 
-<<<<<<< HEAD
-PS05
-Funktionen 
+
+PS05 REGEX
 ```{r}
+#. steht für jedes mögliche Zeichen
+#* steht für 0 oder mehr Vorkommen
+#+ steht für 1 oder mehr Vorkommen
+#? steht für 0 oder 1 Vorkommen
+#[] Menge wird gesucht aber nur eine Position
+#[^] Alles außer Menge wird gesucht aber nur eine Position
+#{} Anzahl der Vorkommen
+#() Gruppierung und Gruppen bilden für referenzierung
+# \b Wortgrenze
+
+grep("^[A-Z]", input, value = TRUE) #Alle Wörter die mit einem Großbuchstaben beginnen  Value True gibt Match zurück ansonsten Position
+grepl("^[A-Z]", input, value = TRUE) #gibt einen Logical Vector zurück
+
+sub("[^a-zA-Z]", "", input) #Ersetzt alle Zeichen bis auf Buchstaben durch nichts (nur bei erstem Treffer)
 gsub("[^a-zA-Z]", "", input) #Alle Zeichen bis auf Buchstaben ersetzen 
 
-#matches aufgeben
+regexpr() #gibt die Position des ersten Matches zurück als Liste
+gregexpr() #gibt die Position aller Matches zurück als Liste
+
+regexec() #gibt die Position des ersten Matches zurück und die einzelnen Gruppen in Spalten 
+gregexec() #gibt die Position aller Matches zurück und die einzelnen Gruppen in Spalten
+
+#matches ausgeben
 matches <- gregexpr("(?<!^)(?<!\\.\\s)([A-Z])\\w+", text, perl = TRUE) #RegEx kann natürlich angepasst werden
 found <- regmatches(text, matches)
-=======
-
-Data Tables
-```{r}
-
-# Beispiel Liste von Vektoren
-vectors <- list(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
-
-# Schwellenwert
-threshold <- 5
-
-# Anwenden der Funktion
-result <- vapply(vectors, function(x) x > threshold, logical(length(vectors[[1]])))
-
-print(result)
-
 ```
 
 
 
-```{r}
-gsub("[^a-zA-Z]", "", input) #Alle Zeichen bis auf Buchstaben ersetzen 
-  cleanInput == paste(rev(strsplit(cleanInput, "")[[1]]), collapse = "")# nochmal anschauen
-
-```
-
-
-Data Tables
+PS08 Data Tables
 ```{r}
 #entfernen einer Spalte
 b[, "id" := NULL]
->>>>>>> 6fdbf17fd9a4cc0b8211d5bffd73b6f701906821
+
 ```
 
