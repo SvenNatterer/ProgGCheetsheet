@@ -77,6 +77,14 @@ matches <- gregexpr("(?<!^)(?<!\\.\\s)([A-Z])\\w+", text, perl = TRUE) #RegEx ka
 found <- regmatches(text, matches)
 ```
 
+PS06 Benchmarking
+```{r}
+#keine Vectoren neu erstellen in loops obv
+
+#microbenchmark um einzelne expressions zu evaluieren
+
+#autoplot?
+```
 
 
 PS08 Data Tables
