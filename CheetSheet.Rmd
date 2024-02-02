@@ -105,5 +105,9 @@ result[is.na(count), count := 0]
 setnames(result, c("online", "onsite"), c("count.online", "count.onsite"))
 setcolorder(result, c("item", "count.onsite", "count.online"))
 
+#Operation bei einem Right Merge anwenden (prices right merge sales mit "item", wendet die Operation in der Mitte an)
+prices[sales, ifelse(channel == "online", price.online, price.onsite), on = "item"]
+
 ```
+
 
