@@ -33,6 +33,8 @@ result <- vapply(vectors, function(x) x > threshold, logical(length(vectors[[1]]
 
 lapply # gibt eine Liste zurück
 
+replicate(n, func()) #gibt noch ein Simplify Argument 
+
 ```
 
 PS04 Debugging
