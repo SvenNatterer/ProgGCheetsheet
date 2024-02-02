@@ -88,11 +88,22 @@ PS06 Benchmarking
 #autoplot?
 ```
 
+PS07 Randomness and Reproducibility
+```{r}
+sample(values, replace = TRUE)#replace müsste zurücklegen sein
+```
 
 PS08 Data Tables
 ```{r}
 #entfernen einer Spalte
 b[, "id" := NULL]
+
+#NAs in 0 umwandeln
+result[is.na(count), count := 0]
+
+#namen und reihenfolge ändern
+setnames(result, c("online", "onsite"), c("count.online", "count.onsite"))
+setcolorder(result, c("item", "count.onsite", "count.online"))
 
 ```
 
