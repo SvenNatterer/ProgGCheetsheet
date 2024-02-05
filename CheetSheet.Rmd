@@ -95,6 +95,17 @@ sample(values, replace = TRUE)#replace müsste zurücklegen sein
 
 PS08 Data Tables
 ```{r}
+datatable[i,j]
+#i wird benutz wie in dplyr filter also z.b col1 < 5 oder ähnliches und bekomme die Zeilen worauf das zutrifft
+# man kann expressions reinschreiben !!! z.b auch sample um zufällige zeilen zu ziehen
+
+#j
+#mit , with = FALSE macht die J Spalte so wie bei einem DF
+#alles außer liste erzeugt vector 
+#listen erzeigen neuen data table unabhängig von der länge des alten DT
+#:= ist wie der Zuweisungspfeil in dplyr vergleichbar mit mutate
+
+
 #entfernen einer Spalte
 b[, "id" := NULL]
 
@@ -107,6 +118,14 @@ setcolorder(result, c("item", "count.onsite", "count.online"))
 
 #Operation bei einem Right Merge anwenden (prices right merge sales mit "item", wendet die Operation in der Mitte an)
 prices[sales, ifelse(channel == "online", price.online, price.onsite), on = "item"]
+
+#rolling joins brauch ich auch
+
+#CJ = Crossjoin es noch einen keyby parameter aber da muss ich nochmal syntax anschauen 
+
+setnafill #sau hilfreich
+
+#setekeyv
 
 ```
 
