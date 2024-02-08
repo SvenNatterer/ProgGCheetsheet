@@ -93,7 +93,7 @@ PS07 Randomness and Reproducibility
 sample(values, replace = TRUE)#replace müsste zurücklegen sein
 ```
 
-PS08 Data Tables
+PS08/PS09 Data Tables
 ```{r}
 datatable[i,j]
 #i wird benutz wie in dplyr filter also z.b col1 < 5 oder ähnliches und bekomme die Zeilen worauf das zutrifft
@@ -129,4 +129,9 @@ setnafill #sau hilfreich
 
 ```
 
+
+PS10 OOP
+```{r}
+
+```
 
