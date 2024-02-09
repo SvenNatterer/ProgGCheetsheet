@@ -1,55 +1,5 @@
 Cheetsheet für R
 
-PS02 Struktur und Funktionen
-```{r}
-#Funktionen kennenlernen
-  all() # alle Werte sind TRUE
-  any() # mindestens ein Wert ist TRUE
-  ifelse() # if else in einer Funktion
-```
-
-PS03 Applys
-```{r}
-# apply, das die erste nicht 0 in einer Matrix such und deren Spalte zurückgibt 
-# 1 zeilenweiße 2 spaltenweiße C(1,2) beides
-# wich kann als Vektor gesehen werden und [[]] greift auf das erste Element zu
-
-apply(matrix, c(1,2), function(x) which(x != 0)[[1]])
-
-# vapply muss immer den Rückgabetype bestimmt werden
-# normal steht in er Matrix noch die anzahl, z.b character(1) "Ein Character"
-
-vapply(matrix, sum, matrix())
-
-# Beispiel Liste von Vektoren
-vectors <- list(c(1, 2, 3), c(4, 5, 6), c(7, 8, 9))
-
-#BSP für selber definierte Funktion
-threshold <- 5
-
-# Anwenden der Funktion
-result <- vapply(vectors, function(x) x > threshold, logical(length(vectors[[1]])))
-
-
-lapply # gibt eine Liste zurück
-
-replicate(n, func()) #gibt noch ein Simplify Argument 
-
-```
-
-PS04 Debugging
-```{r}
-cleanInput == paste(rev(strsplit(cleanInput, "")[[1]]), collapse = "") #paste sehr mächtig um Strings zu formatieren
-supressWarnings() # unterdrückt Warnungen
-
-# mit ... können beliebig viele Argumente übergeben werden um die abzugreifen muss man sie erst als List oder DF bezeichnen (habs mir DFs noch nicht ausprobiert)
-
-beispielfunction <- function(...){
-  args <- list(...)
-}
-```
-
-
 PS05 REGEX
 ```{r}
 #. steht für jedes mögliche Zeichen
@@ -79,14 +29,6 @@ matches <- gregexpr("(?<!^)(?<!\\.\\s)([A-Z])\\w+", text, perl = TRUE) #RegEx ka
 found <- regmatches(text, matches)
 ```
 
-PS06 Benchmarking
-```{r}
-#keine Vectoren neu erstellen in loops obv
-
-#microbenchmark um einzelne expressions zu evaluieren
-
-#autoplot?
-```
 
 PS07 Randomness and Reproducibility
 ```{r}
@@ -129,8 +71,74 @@ setnafill #sau hilfreich
 
 ```
 
-
 PS10 OOP
+```{r}
+
+```
+
+
+Vectoren / Funktionen 
+```{r}
+#Am besten immer versuchen mit [] zu filtern oder replacen 
+
+
+#Funktionen
+which() # rückgabewert ist ein Vector #hat ein Argument: arr.ind welches pos von mehrdiminsionalen Objekten zurückgibt
+
+which.max()
+which.min()
+
+all() # alle Werte sind TRUE
+any() # mindestens ein Wert ist TRUE
+ifelse() #ifelse Rückgabewert hat gleich lönge wie eingabe schlecht zum löschen
+
+paste(, collapse = "") #Setzt Variablen und String ect zusammen (collapse ist ein seperator)
+rev() #dreht strings um 
+strsplit(cleanInput, "") #splittet strings
+```
+
+Matrizen
+```{r}
+
+mat[bedingung,, drop = FALSE] #keine compression auf kleinen Dimension
+```
+
+Data Table 
+```{r}
+#Zeilen Counten
+data[ , count := .N, by = ]
+
+#Spalte löschen 
+data[ , count := NULL]
+data[ , .("alle anderen Spalten")]
+
+#Merges 
+#b lookup in a
+a[b, on = c(...), nochmatch = NA] #nomatch bestimmt wie gefillt wird 
+
+#Anti Merge 
+a[!b, on = c(...)]
+```
+
+Applys
+```{r}
+vapply() #eifnaches apply für listen Rückgabewert muss definiert werden 
+
+lapply() #einfaches apply das eine  Liste zurückgibt 
+
+apply() #geeignet für matrizen und mehrdimensionale Sachen: 1 Zeilen 2 Spalten
+
+replicate(n, func()) #führt eine Funktion mehrmals aus (optional gibt ein simplify argument)
+```
+
+Benchmarking
+```{r}
+#1. immer versuchen alles zu vectorisen 
+#2. nested loops abschaffen 
+```
+
+
+Algos
 ```{r}
 
 ```
