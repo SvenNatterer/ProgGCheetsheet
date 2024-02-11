@@ -1,0 +1,7 @@
+The first three lines are comments
+Example file for the 01_exercise_basics.R task ex04ReadTable
+Note the list columns
+species;names;ages;food, class, if known;cost, approximate, if known
+cat;Felix,Sir Cattington,Larry;3,7,4;Cat Food;100
+dog;Maggie,Snuffles,Klaus;1,4,3;Dog Food;250
+eldritch;Yaldabaoth,Behemoth,The Other;10234,5231,13792168024;MISSING;MISSING

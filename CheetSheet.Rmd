@@ -87,11 +87,6 @@ Benchmarking
 #2. nested loops abschaffen 
 ```
 
-Algos
-```{r}
-
-```
-
 REGEX
 ```{r}
 #matches ausgeben
