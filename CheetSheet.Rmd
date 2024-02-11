@@ -23,6 +23,10 @@ strsplit(cleanInput, "") #splittet strings
 rowSums() #kann werte logicals und alles mögliche adieren
 
 sample(values, replace = TRUE)#replace müsste zurücklegen sein
+
+funtion(...) f(...) + g(...) #neue funktion die die Summe von f und g addiert
+
+seq_along(variable) #gibt eine sequence von 1: length(variable) zurück (for schleife)
 ```
 
 Lists
@@ -61,6 +65,9 @@ a[b, on = c(...), nochmatch = NA] #nomatch bestimmt wie gefillt wird
 
 #Anti Merge 
 a[!b, on = c(...)]
+
+#mit {} können spalten in Data Table ausgeführt werden 
+a[, { spaltex := splatea + spalteb}]
 ```
 
 Applys
