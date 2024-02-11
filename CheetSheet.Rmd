@@ -1,106 +1,46 @@
 Cheetsheet für R
 
-PS05 REGEX
-```{r}
-#. steht für jedes mögliche Zeichen
-#* steht für 0 oder mehr Vorkommen
-#+ steht für 1 oder mehr Vorkommen
-#? steht für 0 oder 1 Vorkommen
-#[] Menge wird gesucht aber nur eine Position
-#[^] Alles außer Menge wird gesucht aber nur eine Position
-#{} Anzahl der Vorkommen
-#() Gruppierung und Gruppen bilden für referenzierung
-# \b Wortgrenze
-
-grep("^[A-Z]", input, value = TRUE) #Alle Wörter die mit einem Großbuchstaben beginnen  Value True gibt Match zurück ansonsten Position
-grepl("^[A-Z]", input, value = TRUE) #gibt einen Logical Vector zurück
-
-sub("[^a-zA-Z]", "", input) #Ersetzt alle Zeichen bis auf Buchstaben durch nichts (nur bei erstem Treffer)
-gsub("[^a-zA-Z]", "", input) #Alle Zeichen bis auf Buchstaben ersetzen 
-
-regexpr() #gibt die Position des ersten Matches zurück als Liste
-gregexpr() #gibt die Position aller Matches zurück als Liste
-
-regexec() #gibt die Position des ersten Matches zurück und die einzelnen Gruppen in Spalten 
-gregexec() #gibt die Position aller Matches zurück und die einzelnen Gruppen in Spalten
-
-#matches ausgeben
-matches <- gregexpr("(?<!^)(?<!\\.\\s)([A-Z])\\w+", text, perl = TRUE) #RegEx kann natürlich angepasst werden
-found <- regmatches(text, matches)
-```
-
-
-PS07 Randomness and Reproducibility
-```{r}
-sample(values, replace = TRUE)#replace müsste zurücklegen sein
-```
-
-PS08/PS09 Data Tables
-```{r}
-datatable[i,j]
-#i wird benutz wie in dplyr filter also z.b col1 < 5 oder ähnliches und bekomme die Zeilen worauf das zutrifft
-# man kann expressions reinschreiben !!! z.b auch sample um zufällige zeilen zu ziehen
-
-#j
-#mit , with = FALSE macht die J Spalte so wie bei einem DF
-#alles außer liste erzeugt vector 
-#listen erzeigen neuen data table unabhängig von der länge des alten DT
-#:= ist wie der Zuweisungspfeil in dplyr vergleichbar mit mutate
-
-
-#entfernen einer Spalte
-b[, "id" := NULL]
-
-#NAs in 0 umwandeln
-result[is.na(count), count := 0]
-
-#namen und reihenfolge ändern
-setnames(result, c("online", "onsite"), c("count.online", "count.onsite"))
-setcolorder(result, c("item", "count.onsite", "count.online"))
-
-#Operation bei einem Right Merge anwenden (prices right merge sales mit "item", wendet die Operation in der Mitte an)
-prices[sales, ifelse(channel == "online", price.online, price.onsite), on = "item"]
-
-#rolling joins brauch ich auch
-
-#CJ = Crossjoin es noch einen keyby parameter aber da muss ich nochmal syntax anschauen 
-
-setnafill #sau hilfreich
-
-#setekeyv
-
-```
-
-PS10 OOP
-```{r}
-
-```
-
-
 Vectoren / Funktionen 
 ```{r}
-#Am besten immer versuchen mit [] zu filtern oder replacen 
+a[] #Rückgabewert ist immer von dem Type von de Extrahiert wird 
+a[[]] #Rückgabewert ist das einzelne Element 
 
 
 #Funktionen
 which() # rückgabewert ist ein Vector #hat ein Argument: arr.ind welches pos von mehrdiminsionalen Objekten zurückgibt
 
-which.max()
+which.max() #Position von dem Maximum
 which.min()
 
 all() # alle Werte sind TRUE
 any() # mindestens ein Wert ist TRUE
 ifelse() #ifelse Rückgabewert hat gleich lönge wie eingabe schlecht zum löschen
 
-paste(, collapse = "") #Setzt Variablen und String ect zusammen (collapse ist ein seperator)
+paste(string, collapse = "") #Setzt Variablen und String ect zusammen (collapse ist ein seperator)
 rev() #dreht strings um 
 strsplit(cleanInput, "") #splittet strings
+
+rowSums() #kann werte logicals und alles mögliche adieren
+
+sample(values, replace = TRUE)#replace müsste zurücklegen sein
 ```
+
+Lists
+```{r}
+#named liste erstellen 
+value[[name]] <- value #Element einer benannt zuweisen oder ändern
+
+value[name] <- list(value) #liste von elemnten zuweisen
+
+```
+
 
 Matrizen
 ```{r}
 
 mat[bedingung,, drop = FALSE] #keine compression auf kleinen Dimension
+
+mat[order(rowSums(is.na(mat))),, drop = FALSE] #nach Anzahl NAs ordnen
 ```
 
 Data Table 
@@ -111,6 +51,9 @@ data[ , count := .N, by = ]
 #Spalte löschen 
 data[ , count := NULL]
 data[ , .("alle anderen Spalten")]
+
+#NAs etsetzen
+setnafill()
 
 #Merges 
 #b lookup in a
@@ -137,9 +80,146 @@ Benchmarking
 #2. nested loops abschaffen 
 ```
 
-
 Algos
 ```{r}
 
 ```
 
+REGEX
+```{r}
+#matches ausgeben
+matches <- gregexpr("(?<!^)(?<!\\.\\s)([A-Z])\\w+", text, perl = TRUE) #RegEx kann natürlich angepasst werden
+found <- regmatches(text, matches)
+```
+
+
+R6
+```{r}
+Memoiser <- R6Class('Clas',
+                    public = list(
+                      initialize = function(func){
+                        private$.func <- func
+                      },
+                      call = function(x){
+                        # browser() zum debuggen
+                        name <- format(x, scientific = FALSE)
+                        if (name %in% names(private$.value)) return(private$.value[[name]])
+                        private$.value[[name]] <- private$.func(x)
+                        private$.value[[name]]
+                      }
+                    ),
+                    
+                    private = list(
+                      #hier am besten variablen initialisieren
+                      .func = NULL,
+                      .value = list()
+                    )
+                    )
+```
+
+S3 
+```{r}
+Fraction <- function(numerator, denominator = 1){
+  assertIntegerish(numerator)
+  assertIntegerish(denominator)
+  both <- GCD(numerator,denominator)
+  numerator <- numerator / both
+  denominator <- denominator / both
+  if (denominator == 0) return("Division by Zero")
+  if (denominator < 0){
+    numerator <- -numerator  
+    denominator <- -denominator
+  } 
+  fraction <- list(numerator = numerator, denominator = denominator)
+  class(fraction) <- "Fraction"    #hier wird Klasse difinert
+  return(fraction)
+}
+
+print.Fraction <- function(x, ...) {
+  cat(sprintf("A Fraction: %d // %d", x$numerator, x$denominator))
+  invisible(x)
+}
+
+plus <- function(e1, e2) {
+  assertClass(e2, "Fraction")
+  UseMethod("plus")
+}
+
+times <- function(e1, e2) {
+  assertClass(e2, "Fraction")
+  UseMethod("times")
+}
+
+plus.Fraction <- function(e1, e2) {
+  if (e1$denominator == e2$denominator) {
+    e3n <- e1$numerator + e2$numerator
+    e3d <- e1$denominator
+    Fraction(e3n, e3d)
+  }else {
+    e3d <- e1$denominator * e2$denominator
+    num1 <- e1$numerator * e2$denominator
+    num2 <- e2$numerator * e1$denominator
+    e3n <- num1 + num2
+    Fraction(e3n, e3d)
+  }
+}
+
+times.Fraction <- function(e1, e2) {
+  e3n <- e1$numerator * e2$numerator
+  e3d <- e1$denominator * e2$denominator
+  Fraction(e3n, e3d)
+}
+
+plus.numeric <- function(e1, e2) {
+  assertInt(e1, tol = 0)
+  e1 <- Fraction(e1)
+  plus(e1, e2)
+}
+
+times.numeric <- function(e1, e2) {
+  assertInt(e1, tol = 0)
+  e1 <- Fraction(e1)
+  times(e1, e2)
+}
+```
+
+
+REGEX Cheetsheet
+```{r}
+#. steht für jedes mögliche Zeichen
+#* steht für 0 oder mehr Vorkommen
+#+ steht für 1 oder mehr Vorkommen
+#? steht für 0 oder 1 Vorkommen
+#[] Menge wird gesucht aber nur eine Position
+#[^] Alles außer Menge wird gesucht aber nur eine Position
+#{} Anzahl der Vorkommen
+#() Gruppierung und Gruppen bilden für referenzierung
+# \b Wortgrenze
+
+grep("^[A-Z]", input, value = TRUE) #Alle Wörter die mit einem Großbuchstaben beginnen  Value True gibt Match zurück ansonsten Position
+grepl("^[A-Z]", input, value = TRUE) #gibt einen Logical Vector zurück
+
+sub("[^a-zA-Z]", "", input) #Ersetzt alle Zeichen bis auf Buchstaben durch nichts (nur bei erstem Treffer)
+gsub("[^a-zA-Z]", "", input) #Alle Zeichen bis auf Buchstaben ersetzen 
+
+regexpr() #gibt die Position des ersten Matches zurück als Liste
+gregexpr() #gibt die Position aller Matches zurück als Liste
+
+regexec() #gibt die Position des ersten Matches zurück und die einzelnen Gruppen in Spalten 
+gregexec() #gibt die Position aller Matches zurück und die einzelnen Gruppen in Spalten
+```
+
+
+Data Tables Cheetsheet
+```{r}
+datatable[i,j]
+#i wird benutz wie in dplyr filter also z.b col1 < 5 oder ähnliches und bekomme die Zeilen worauf das zutrifft
+# man kann expressions reinschreiben !!! z.b auch sample um zufällige zeilen zu ziehen
+
+#j
+#mit , with = FALSE macht die J Spalte so wie bei einem DF
+#alles außer liste erzeugt vector 
+#listen erzeigen neuen data table unabhängig von der länge des alten DT
+#:= ist wie der Zuweisungspfeil in dplyr vergleichbar mit mutate
+
+```
